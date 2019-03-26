@@ -1,24 +1,32 @@
-import * as data from './mocks/film.json';
+import data  from '../mocks/film.json';
 
-class Film{
-    constructor(public title:string, public releasedate:string,
+export class Film {
+    constructor(public title:string, public releasedate:Date,
                 public studio:string, public poster:string, public location:string,
-                public rating:string, public directors:string, public genre:string,
-                public actors:string, public trailers:string){
-    }
+                public rating:string, public directors:string, public genre:string[],
+                public actors:string[], public trailers:Trailers[])
+    {}
 }
 
-class Trailers{
-    constructor(public postdate:string, public url:string, public type:string,
-                public exclusive:boolean, public hd:boolean){
-    }
+export class Trailers{
+    constructor(public postdate:Date, public url:string, public type:string,
+                public exclusive:boolean, public hd:boolean)
+    {}
 }
 
+export function listFilm():Array<any>{
 
-class Personne{
-    constructor(public nom:string, public prenom:string, public genre:string,
-                private religion?:string,
-    ){
-
-    }
+    return data.map( (items:any) => new Film(
+        items.title,
+        items.releasedate,
+        items.studio,
+        items.poster,
+        items.location,
+        items.rating,
+        items.directors,
+        items.genre,
+        items.actors,
+        items.trailers.map((item:any) => new Trailers(item.postdate, item.url, item.type, item.exclusive, item.hd))
+    ))
 }
+
